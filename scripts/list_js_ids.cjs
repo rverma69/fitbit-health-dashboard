@@ -1,0 +1,11 @@
+const fs = require('fs');
+const js = fs.readFileSync('public/app.js', 'utf8');
+const getByIdRegex = /getElementById\(['"]([^'"]+)['"]/g;
+const setTextRegex = /setText\(['"]([^'"]+)['"]/g;
+const animateCountUpRegex = /animateCountUp\(['"]([^'"]+)['"]/g;
+const set = new Set();
+let m;
+while ((m = getByIdRegex.exec(js)) !== null) set.add(m[1]);
+while ((m = setTextRegex.exec(js)) !== null) set.add(m[1]);
+while ((m = animateCountUpRegex.exec(js)) !== null) set.add(m[1]);
+console.log(JSON.stringify([...set].sort(), null, 2));

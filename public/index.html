@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Statix · Precision Biometric Intelligence</title>
+  <!-- Favicon: Statix Circuit Logo -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2312141a'/%3E%3Cpath d='M 28 74 L 64 74 A 12 12 0 0 0 64 50 L 36 50 A 12 12 0 0 1 36 26 L 72 26' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='28' cy='74' r='6' fill='%23d2dce6'/%3E%3Ccircle cx='50' cy='50' r='4.2' fill='%238898a8'/%3E%3Ccircle cx='72' cy='26' r='6' fill='%23d2dce6'/%3E%3C/svg%3E"/>
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono & Space Grotesk -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN with Forms & Container Queries -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            telemetry: {
+              charcoal: '#0d0f12',
+              glass: 'rgba(22, 25, 30, 0.85)',
+              sub: 'rgba(16, 18, 22, 0.65)',
+              border: 'rgba(255, 255, 255, 0.08)',
+              subBorder: 'rgba(255, 255, 255, 0.05)',
+              chip: 'rgba(32, 35, 41, 0.85)',
+              chipBorder: 'rgba(255, 255, 255, 0.08)',
+              sage: '#52b788',
+              amber: '#e0a96d',
+              coral: '#e06d75',
+              cyan: '#70b8d4',
+              violet: '#9d8cd7'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'SF Mono', 'ui-monospace', 'Menlo', 'Monaco', 'monospace'],
+            brand: ['Space Grotesk', 'Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="styles.css?v=5.0"/>
+</head>
+<body class="min-h-screen py-4 px-2.5 sm:py-6 sm:px-4 md:px-8 lg:px-12 selection:bg-telemetry-coral/20 selection:text-white font-sans">
+  <!-- Fixed Custom Wallpaper Layers (Hardware Accelerated) -->
+  <div id="customBgLayer" class="fixed inset-0 pointer-events-none z-[-2] bg-cover bg-center bg-no-repeat transition-all duration-500"></div>
+  <div id="wallpaperOverlay" class="fixed inset-0 pointer-events-none transition-all duration-300 z-[-1]" style="background: rgba(0, 0, 0, 0.25);"></div>
+
+  <svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+
+  <!-- BEGIN: MainDashboardContainer -->
+  <div class="max-w-[1580px] mx-auto space-y-6">
+
+    <!-- Notice Banner for Consent or Errors -->
+    <div id="noticeBanner" class="hidden glass-card px-4 sm:px-5 py-2.5 sm:py-3 text-xs border border-red-500/20 bg-red-950/30 text-rose-300 flex items-center justify-between gap-3 sm:gap-4">
+      <span id="noticeBannerText">Authorization required to stream biometrics.</span>
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="noticeActionBtn" class="underline font-semibold hover:text-white transition">Configure</button>
+        <button id="dismissBannerBtn" class="opacity-60 hover:opacity-100 font-bold px-1">✕</button>
+      </div>
+    </div>
+
+    <!-- BEGIN: TopHeader (Divided into 3 Floating Pure-Glass Islands) -->
+    <header class="w-full flex flex-col xl:flex-row items-center justify-between gap-3 lg:gap-3.5" data-purpose="dashboard-header">
+      
+      <!-- Island 1: Left Brand Pill -->
+      <div class="pure-glass-capsule px-3.5 py-1.5 flex items-center gap-2.5 shrink-0 group">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-[8px] sm:rounded-[9px] bg-[#12141a] border border-white/15 shadow-inner shrink-0 overflow-hidden transition-transform group-hover:scale-105">
+          <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5" viewBox="0 0 100 100" fill="none">
+            <path d="M 28 74 L 64 74 A 12 12 0 0 0 64 50 L 36 50 A 12 12 0 0 1 36 26 L 72 26" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="28" cy="74" r="6" fill="#d2dce6"/>
+            <circle cx="50" cy="50" r="4.2" fill="#8898a8"/>
+            <circle cx="72" cy="26" r="6" fill="#d2dce6"/>
+          </svg>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="statix-brand-title text-base sm:text-lg font-bold tracking-wide text-white leading-none">Statix</span>
+          <!-- Hidden status badges for test & telemetry assertions -->
+          <span id="demoBadge" class="hidden"></span>
+          <span id="liveBadge" class="hidden"></span>
+          <span id="deviceModelName" class="hidden">Fitbit Inspire 3</span>
+          <span id="lastSyncLabel" class="hidden">Synced</span>
+        </div>
+      </div>
+
+      <!-- Island 2: Middle Pure-Glass Biological Age Capsule (Ref Replicated) -->
+      <div class="pure-glass-middle px-3 sm:px-3.5 py-1.5 flex items-center gap-2 sm:gap-3 mx-auto xl:mx-0 shrink-0 max-w-full overflow-x-auto no-scrollbar">
+        <!-- Dual-Row LED Block Equalizer (Battery-like) -->
+        <div class="flex items-center gap-2">
+          <div class="flex flex-col gap-0.5" id="headerBatteryGrid" aria-hidden="true" title="Age Pace Battery Indicator">
+            <div class="flex gap-0.5">
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-[#00C8FF]"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-top-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+            </div>
+            <div class="flex gap-0.5">
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+              <span class="battery-bottom-block w-1 h-2 rounded-[1px] bg-white/20"></span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center leading-none">
+            <span id="headerBioDeltaVal" class="text-xs font-mono font-bold text-[#00C8FF] tracking-tight">-3.2</span>
+            <span class="text-[8.5px] font-mono text-zinc-400">yrs</span>
+          </div>
+        </div>
+
+        <div class="w-px h-4 bg-white/12"></div>
+
+        <!-- Biological Age -->
+        <div class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-[1px] bg-[#00C8FF] shrink-0"></span>
+          <span class="text-xs font-sans text-zinc-400 whitespace-nowrap">Biological age</span>
+          <span id="headerBioAgeVal" class="text-base font-sans font-bold text-white tracking-tight ml-0.5">21.8</span>
+          <span class="text-[10px] font-mono text-zinc-400">yrs</span>
+        </div>
+
+        <div class="w-px h-4 bg-white/12"></div>
+
+        <!-- Chronological Age -->
+        <div class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-[1px] bg-zinc-500 shrink-0"></span>
+          <span class="text-xs font-sans text-zinc-400 whitespace-nowrap">Chronological age</span>
+          <span id="headerChronoAgeVal" class="text-base font-sans font-bold text-zinc-200 tracking-tight ml-0.5">25</span>
+          <span class="text-[10px] font-mono text-zinc-400">yrs</span>
+        </div>
+
+        <!-- Hidden aging summary sentence to preserve compact header width and test assertions -->
+        <p id="headerBioAgeSummarySentence" class="hidden">
+          Your body is aging <strong id="headerBioAgeSummaryDiff">3.2 years younger</strong> than your chronological age
+        </p>
+
+        <!-- Hidden hooks for test assertions -->
+        <span id="headerPacingVal" class="sr-only">0.86x</span>
+        <div id="headerPacingBar" class="hidden"></div>
+      </div>
+
+      <!-- Island 3: Right Controls Pill -->
+      <div class="pure-glass-capsule px-2 sm:px-2.5 py-1.5 flex items-center gap-1.5 sm:gap-2 shrink-0 max-w-full overflow-x-auto no-scrollbar">
+        <!-- Date Navigator -->
+        <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-2 py-0.5 gap-1">
+          <button id="prevDateBtn" class="text-zinc-400 hover:text-white px-1 transition cursor-pointer" aria-label="Previous Day">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <input type="date" id="datePicker" class="text-[10px] font-mono font-medium text-zinc-200 bg-transparent border-none outline-none cursor-pointer p-0"/>
+          <button id="nextDateBtn" class="text-zinc-400 hover:text-white px-1 transition cursor-pointer" aria-label="Next Day">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+          <button id="todayBtn" class="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-white/10 text-zinc-200 hover:bg-white/20 transition cursor-pointer">Today</button>
+        </div>
+
+        <!-- Sync Button -->
+        <button id="sync-btn" aria-label="Synchronize Telemetry" class="bg-white/5 border border-white/10 text-zinc-300 hover:text-white hover:border-white/20 transition-colors duration-150 rounded-full px-2.5 py-1 flex items-center justify-center gap-1.5 text-[10px] font-mono font-medium tracking-wider cursor-pointer shadow-inner shrink-0" type="button">
+          <svg id="sync-icon" class="w-3.5 h-3.5 text-zinc-400 inline-block origin-center" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+          </svg>
+          <span class="uppercase font-mono hidden sm:inline" id="sync-label">SYNC</span>
+        </button>
+        <!-- Compatibility aliasing for test scripts & app.js -->
+        <button id="syncNowBtn" class="hidden"><svg id="syncIcon" class="hidden"></svg></button>
+
+        <!-- Stats for Nerds Button -->
+        <button id="openNerdsBtn" aria-label="Stats for Nerds" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-white/10 transition border border-white/10 cursor-pointer shrink-0" title="Stats for Nerds">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+        </button>
+
+        <!-- Wallpaper Customizer Button -->
+        <button id="openWallpaperBtn" aria-label="Customize Background" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-white/10 transition border border-white/10 cursor-pointer shrink-0" title="Customize Background &amp; Wallpaper">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+            <path d="M21 15l-5-5L5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <!-- Settings Button -->
+        <button id="openSettingsBtn" aria-label="Settings" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-white/10 transition border border-white/10 cursor-pointer shrink-0" title="Settings &amp; Health Connect">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+        <button id="openHealthConnectBtn" class="hidden"></button>
+        <button id="exportBtn" class="hidden"></button>
+        <span id="connectBtnText" class="hidden"></span>
+
+        <!-- User Profile Avatar-Only Circular Button (Clean circular avatar with perfect fallback) -->
+        <button id="userProfileChip" aria-label="User Profile" class="relative w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-white/10 transition border border-white/10 cursor-pointer overflow-hidden shrink-0" title="User Profile">
+          <div id="userAvatarPlaceholder" class="w-full h-full bg-white/10 flex items-center justify-center text-[10px] font-mono font-bold text-zinc-200">
+            <svg class="w-4 h-4 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <img id="userAvatarImg" src="" alt="Avatar" class="absolute inset-0 w-full h-full object-cover rounded-full hidden"/>
+          <span id="userDisplayName" class="hidden">Health Athlete</span>
+        </button>
+      </div>
+    </header>
+    <!-- END: TopHeader -->
+
+    <!-- BEGIN: Row 1 (Activity & Daily Strain + Overnight Vitals) -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+      <!-- Card 1: Concentric Activity Rings & Daily Load -->
+      <section class="xl:col-span-6 glass-card p-6 flex flex-col justify-between h-full" data-purpose="activity-strain-card">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Activity Rings &amp; Day Strain</h2>
+            </div>
+            <span id="activityRingsDateLabel" class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">2026-10-07</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center my-3">
+            <!-- Left: Rings -->
+            <div class="sm:col-span-5 flex justify-center">
+              <div class="relative flex items-center justify-center">
+                <svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 180 180">
+                  <circle cx="90" cy="90" fill="transparent" r="78" stroke="rgba(255,255,255,0.06)" stroke-width="7"></circle>
+                  <circle cx="90" cy="90" fill="transparent" r="65" stroke="rgba(255,255,255,0.06)" stroke-width="7"></circle>
+                  <circle cx="90" cy="90" fill="transparent" r="52" stroke="rgba(255,255,255,0.06)" stroke-width="7"></circle>
+                  <circle id="ringMove" cx="90" cy="90" fill="transparent" r="78" stroke="#df6b62" stroke-dasharray="490.1" stroke-dashoffset="490.1" stroke-linecap="round" stroke-width="7" class="ring-progress"></circle>
+                  <circle id="ringExercise" cx="90" cy="90" fill="transparent" r="65" stroke="#e2b38f" stroke-dasharray="408.4" stroke-dashoffset="408.4" stroke-linecap="round" stroke-width="7" class="ring-progress"></circle>
+                  <circle id="ringStand" cx="90" cy="90" fill="transparent" r="52" stroke="#7b8494" stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round" stroke-width="7" class="ring-progress"></circle>
+                  <!-- Crisp overlap vector caps for halo audit compliance -->
+                  <circle id="capMove" cx="168" cy="90" r="3.5" fill="#df6b62" stroke="#000000" stroke-width="1.5" style="opacity:0;pointer-events:none"></circle>
+                  <circle id="capExercise" cx="155" cy="90" r="3.5" fill="#e2b38f" stroke="#000000" stroke-width="1.5" style="opacity:0;pointer-events:none"></circle>
+                  <circle id="capStand" cx="142" cy="90" r="3.5" fill="#7b8494" stroke="#000000" stroke-width="1.5" style="opacity:0;pointer-events:none"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  <span id="stepsCount" class="text-2xl font-sans font-bold tracking-tight text-white leading-none">--</span>
+                  <span class="text-[9px] font-mono tracking-widest text-zinc-400 uppercase mt-1.5 leading-none">STEPS</span>
+                </div>
+              </div>
+            </div>
+            <!-- Right: Move / Exercise / Distance Rows -->
+            <div class="sm:col-span-7 grid grid-cols-1 gap-2.5">
+              <div class="glass-card-sub p-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full" style="background-color: #df6b62;"></span>
+                  <span class="font-sans text-xs font-semibold text-zinc-300 uppercase tracking-wide">MOVE</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-sans text-sm font-bold text-white tracking-tight"><span id="caloriesBurnedNum">--</span> <span class="text-[10px] text-zinc-400 font-normal">kcal</span></span>
+                  <span id="caloriesBurned" class="block text-[9px] font-mono font-medium text-zinc-500">CALORIES</span>
+                </div>
+              </div>
+              <div class="glass-card-sub p-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full" style="background-color: #e2b38f;"></span>
+                  <span class="font-sans text-xs font-semibold text-zinc-300 uppercase tracking-wide">EXERCISE</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-sans text-sm font-bold text-white tracking-tight"><span id="azmCount">--</span> <span id="azmGoal" class="text-[10px] text-zinc-400 font-normal">/ 30m</span></span>
+                  <span id="azmPercent" class="block text-[9px] font-mono font-medium text-zinc-500">ACTIVE ZONE</span>
+                </div>
+              </div>
+              <div class="glass-card-sub p-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full" style="background-color: #7b8494;"></span>
+                  <span class="font-sans text-xs font-semibold text-zinc-300 uppercase tracking-wide">DISTANCE</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-sans text-sm font-bold text-white tracking-tight"><span id="distanceCount">-- km</span></span>
+                  <span id="stepsGoal" class="block text-[9px] font-mono font-medium text-zinc-400">10,000 GOAL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Sparkline Sub-Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-4 border-t border-white/5 mt-4">
+          <div class="glass-card-sub p-2.5">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">RESTING HR</span>
+            <p class="font-sans text-base font-bold text-white mt-0.5 tracking-tight"><span id="kpiRhrVal">--</span> <span class="text-[9px] text-[#df6b62] font-mono font-normal">bpm</span></p>
+            <div class="mt-1"><span id="kpiRhrBadge" class="font-mono text-[9px] sm:text-[10px] text-telemetry-coral font-bold shrink-0 whitespace-nowrap">--</span></div>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">DAY STRAIN</span>
+            <p class="font-sans text-base font-bold text-white mt-0.5 tracking-tight"><span id="kpiStrainVal">--</span> <span class="text-[9px] text-zinc-500 font-mono font-normal">/ 21</span></p>
+            <div class="mt-1"><span id="kpiStrainBadge" class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">--</span></div>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">HRV RMSSD</span>
+            <p class="font-sans text-base font-bold text-white mt-0.5 tracking-tight"><span id="kpiHrvVal">--</span> <span class="text-[9px] text-zinc-400 font-mono font-normal">ms</span></p>
+            <div class="mt-1"><span id="kpiHrvBadge" class="font-mono text-[9px] sm:text-[10px] text-telemetry-coral font-bold shrink-0 whitespace-nowrap">--</span></div>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">RECOVERY</span>
+            <p class="font-sans text-base font-bold text-white mt-0.5 tracking-tight"><span id="kpiRecoveryVal">--</span></p>
+            <div class="mt-1"><span id="kpiRecoveryBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">--</span></div>
+          </div>
+        </div>
+
+        <!-- Hidden elements for test suite compatibility -->
+        <span id="kpiImpulseVal" class="hidden">0</span>
+        <span id="kpiAzmSubVal" class="hidden">0</span>
+        <span id="kpiCalSubVal" class="hidden">0</span>
+        <div id="kpiImpulseBar" class="hidden"></div>
+      </section>
+
+      <!-- Card 2: Overnight Vitals Matrix (Clean Sensor Cards) -->
+      <section class="xl:col-span-6 glass-card p-6 flex flex-col justify-between h-full" data-purpose="overnight-vitals-card">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Overnight Sensor Vitals</h2>
+            </div>
+            <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">INSPIRE 3 OPTICAL SENSORS</span>
+          </div>
+          <!-- 6 Clean Sensor Vitals Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3">
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">Resting HR</span>
+              <div class="flex items-baseline gap-1">
+                <span id="restingHeartRate" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">bpm</span>
+              </div>
+              <div class="mt-3"><span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">RECORDED</span></div>
+            </div>
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">HRV RMSSD</span>
+              <div class="flex items-baseline gap-1">
+                <span id="vitalsHrv" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">ms</span>
+              </div>
+              <div class="mt-3"><span id="hrvStatus" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">RECORDED</span></div>
+              <span id="hrvValue" class="hidden"></span>
+            </div>
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">Blood Oxygen</span>
+              <div class="flex items-baseline gap-1">
+                <span id="vitalsSpo2" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">%</span>
+              </div>
+              <div class="mt-3"><span id="spo2Status" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">RECORDED</span></div>
+              <span id="spo2Value" class="hidden"></span>
+            </div>
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">Breath Rate</span>
+              <div class="flex items-baseline gap-1">
+                <span id="vitalsResp" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">rpm</span>
+              </div>
+              <div class="mt-3"><span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">RECORDED</span></div>
+              <span id="breathingValue" class="hidden"></span>
+            </div>
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">Wrist Temp</span>
+              <div class="flex items-baseline gap-1">
+                <span id="vitalsTemp" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">°C</span>
+              </div>
+              <div class="mt-3"><span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">NOMINAL</span></div>
+            </div>
+            <div class="glass-card-sub p-4">
+              <span class="font-mono text-[10px] text-zinc-400 uppercase block mb-1 tracking-wider">VO2 Max</span>
+              <div class="flex items-baseline gap-1">
+                <span id="cardioFitnessScore" class="font-sans text-2xl font-bold tracking-tight text-white">--</span>
+                <span class="font-mono text-xs text-zinc-400">ml/kg</span>
+              </div>
+              <div class="mt-3"><span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">SUPERIOR</span></div>
+            </div>
+          </div>
+          </div>
+        <!-- Footer Bar -->
+        <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400">
+          <span class="font-mono text-[10px] tracking-wide">6 Nocturnal Sensors Synchronized</span>
+          <span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">AUTONOMIC VAGAL DOMINANCE</span>
+        </div>
+      </section>
+    </div>
+    <!-- END: Row 1 -->
+
+    <!-- BEGIN: Row 2 (Biometric Recovery & Strain + Biological Age & Longevity) -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+      <!-- Card 3: Biometric Recovery, Strain & Body Battery -->
+      <section class="xl:col-span-6 glass-card p-6 flex flex-col justify-between h-full" data-purpose="recovery-intelligence-card">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Recovery · Strain · Body Battery</h2>
+          </div>
+          <span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">PRIME READINESS</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 my-auto">
+          <!-- Left Column: WHOOP Recovery -->
+          <div class="sm:col-span-5 glass-card-sub p-5 flex flex-col items-center justify-between text-center">
+            <div class="w-full flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">WHOOP RECOVERY</span>
+              <span id="whoopRecoveryVal" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">--</span>
+            </div>
+            <div class="relative w-full max-w-[210px] mx-auto flex flex-col items-center justify-center my-2">
+              <svg class="w-48 h-28 overflow-visible" viewBox="0 0 160 95">
+                <defs>
+                  <linearGradient id="recoveryArcGrad" x1="0%" x2="100%" y1="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4b5563"></stop>
+                    <stop offset="45%" stop-color="#8b939e"></stop>
+                    <stop offset="70%" stop-color="#e2b38f"></stop>
+                    <stop offset="100%" stop-color="#e06d75"></stop>
+                  </linearGradient>
+                  <radialGradient cx="50%" cy="100%" id="innerGlow" r="80%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.06)"></stop>
+                    <stop offset="70%" stop-color="rgba(20,22,26,0.85)"></stop>
+                    <stop offset="100%" stop-color="rgba(14,16,18,0.95)"></stop>
+                  </radialGradient>
+                </defs>
+                <path d="M 20 85 A 60 60 0 0 1 140 85" fill="url(#innerGlow)"></path>
+                <path d="M 16 85 A 64 64 0 0 1 144 85" fill="none" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 3" stroke-width="1.5"></path>
+                <path id="recoveryRing" d="M 20 85 A 60 60 0 0 1 140 85" fill="none" stroke="url(#recoveryArcGrad)" stroke-linecap="round" stroke-width="6" stroke-dasharray="188.5" stroke-dashoffset="188.5"></path>
+                <circle id="recoveryKnobOuter" cx="20" cy="85" fill="#ffffff" opacity="0.4" r="6.5"></circle>
+                <circle id="recoveryKnobInner" cx="20" cy="85" fill="#ffffff" r="4" stroke="#e06d75" stroke-width="2"></circle>
+              </svg>
+              <div class="absolute inset-x-0 bottom-2 flex flex-col items-center justify-center text-center pointer-events-none">
+                <div class="relative inline-flex items-baseline justify-center">
+                  <span id="recoveryScoreNum" class="text-3xl font-sans font-bold tracking-tight text-white leading-none">--</span>
+                  <span id="whoopRecoveryUnit" class="text-[15px] font-bold text-zinc-400 absolute left-full ml-1 bottom-0.5 tracking-tight">%</span>
+                </div>
+                <span id="whoopZoneBadge" class="text-[11px] font-sans font-medium text-zinc-300 tracking-normal mt-1 block">WAITING DATA</span>
+              </div>
+            </div>
+            <p id="whoopAdviceText" class="text-[11px] text-zinc-400 leading-tight font-sans mt-2">Connect Google Health to calibrate recovery.</p>
+            <span id="whoopAdviceTextFull" class="hidden"></span>
+          </div>
+
+          <!-- Right Column: Day Strain & Body Battery -->
+          <div class="sm:col-span-7 flex flex-col justify-between space-y-4">
+            <!-- Day Strain -->
+            <div class="glass-card-sub p-4">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wide">DAY STRAIN (BANISTER TRIMP)</span>
+                <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">0 – 21 SCALE</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span id="whoopDayStrainVal" class="text-2xl font-sans font-bold tracking-tight text-zinc-100">--</span>
+                <span class="text-xs font-mono text-zinc-500">/ 21.0</span>
+              </div>
+              <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="whoopStrainBar" class="h-full bg-gradient-to-r from-zinc-500 to-[#e2b38f] rounded-full" style="width: 0%;"></div>
+              </div>
+              <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1 uppercase tracking-wider">
+                <span>Rest</span><span>Moderate</span><span>High</span><span>Peak</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mt-2 font-sans">Optimal daily load target: <span id="whoopTargetStrain" class="text-zinc-200 font-semibold font-mono">--</span></p>
+            </div>
+
+            <!-- Firstbeat Body Battery -->
+            <div class="glass-card-sub p-4">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wide">FIRSTBEAT BODY BATTERY</span>
+                <span id="bodyBatteryLabel" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">--</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span id="bodyBatteryVal" class="text-2xl font-sans font-bold tracking-tight text-zinc-100">--</span>
+                <span class="text-xs font-mono text-zinc-500">/ 100</span>
+              </div>
+              <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden mt-2 border border-white/5">
+                <div id="bodyBatteryBar" class="h-full bg-gradient-to-r from-zinc-500 to-telemetry-sage rounded-full" style="width: 0%;"></div>
+              </div>
+              <p class="text-[11px] text-zinc-400 mt-1 font-sans">Energy reserve modeled from nocturnal restorative sleep and daily TRIMP.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Sub-metrics: Restorative, Sleep Met, Sleep Debt, Awakenings -->
+        <div class="grid grid-cols-4 gap-2 pt-4 border-t border-white/5 text-center mt-4">
+          <div class="glass-card-sub p-2">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">RESTORATIVE</span>
+            <p id="whoopRestorativeMins" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            <span id="whoopRestorativePct" class="text-[9px] font-sans text-zinc-400">Deep+REM</span>
+          </div>
+          <div class="glass-card-sub p-2">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">SLEEP MET</span>
+            <p id="whoopSleepPerfVal" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            <span class="text-[9px] font-sans text-zinc-400">of 8h Goal</span>
+          </div>
+          <div class="glass-card-sub p-2">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">SLEEP DEBT</span>
+            <p id="whoopSleepDebtVal" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            <span class="text-[9px] font-sans text-zinc-400">Manageable</span>
+          </div>
+          <div class="glass-card-sub p-2">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">AWAKENINGS</span>
+            <p id="whoopAwakeningsVal" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            <span class="text-[9px] font-sans text-zinc-500">Normal</span>
+          </div>
+        </div>
+
+        <!-- Hidden subscore hooks for full compatibility -->
+        <span id="whoopHrvSub" class="hidden"></span>
+        <span id="whoopRhrSub" class="hidden"></span>
+        <span id="whoopSleepSub" class="hidden"></span>
+      </section>
+
+      <!-- Card 4: Biological Age & Pace of Aging Trajectory -->
+      <section class="xl:col-span-6 glass-card p-6 flex flex-col justify-between h-full" data-purpose="longevity-biomarkers-card">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Biological Age &amp; Longevity Biomarkers</h2>
+          </div>
+          <span id="bioCohortBadge" class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">KDM ALGORITHM</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 my-auto">
+          <!-- Left: Radar Chart -->
+          <div class="sm:col-span-6 glass-card-sub p-4 flex flex-col items-center justify-between">
+            <div class="w-full flex justify-between items-center mb-1">
+              <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">PHYSIOLOGICAL AGE RADAR</span>
+              <span class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">AUTHENTIC SENSORS</span>
+            </div>
+            <div class="w-full max-w-[210px] aspect-square mx-auto relative my-1 flex items-center justify-center">
+              <svg class="w-full h-full overflow-visible" viewBox="0 0 260 260">
+                <polygon fill="none" points="130,25 225,95 188,210 72,210 35,95" stroke="rgba(255,255,255,0.1)" stroke-width="1"></polygon>
+                <polygon fill="none" points="130,55 198,105 172,185 88,185 62,105" stroke="rgba(255,255,255,0.12)" stroke-width="1"></polygon>
+                <polygon fill="none" points="130,85 170,115 155,160 105,160 90,115" stroke="rgba(255,255,255,0.14)" stroke-width="1"></polygon>
+                <line stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3" stroke-width="1" x1="130" x2="130" y1="130" y2="25"></line>
+                <line stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3" stroke-width="1" x1="130" x2="225" y1="130" y2="95"></line>
+                <line stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3" stroke-width="1" x1="130" x2="188" y1="130" y2="210"></line>
+                <line stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3" stroke-width="1" x1="130" x2="72" y1="130" y2="210"></line>
+                <line stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3" stroke-width="1" x1="130" x2="35" y1="130" y2="95"></line>
+                <polygon id="radarPolygon" fill="rgba(0, 200, 255, 0.14)" points="130,45 208,100 160,195 90,170 50,102" stroke="#00C8FF" stroke-width="1.5"></polygon>
+                <circle cx="130" cy="45" fill="#ffffff" r="2.5" stroke="#00C8FF" stroke-width="1.5"></circle>
+                <circle cx="208" cy="100" fill="#ffffff" r="2.5" stroke="#00C8FF" stroke-width="1.5"></circle>
+                <circle cx="160" cy="195" fill="#ffffff" r="2.5" stroke="#00C8FF" stroke-width="1.5"></circle>
+                <circle cx="90" cy="170" fill="#ffffff" r="2.5" stroke="#00C8FF" stroke-width="1.5"></circle>
+                <circle cx="50" cy="102" fill="#ffffff" r="2.5" stroke="#00C8FF" stroke-width="1.5"></circle>
+                <text fill="#e4e4e7" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="600" text-anchor="middle" x="130" y="16">Biological</text>
+                <text fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="start" x="215" y="98">Strain (AZM)</text>
+                <text fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" x="190" y="226">Vagal (HRV)</text>
+                <text fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" x="75" y="226">Resting HR</text>
+                <text fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="end" x="45" y="98">Restorative Sleep</text>
+              </svg>
+            </div>
+            <div class="w-full flex items-center justify-between pt-2 border-t border-white/5 font-mono text-[9px] text-zinc-400">
+              <span id="bioSyncStatus">SYNC: NOMINAL</span>
+              <span id="bioCorrVal" class="text-zinc-200 font-bold">0.94 CORR</span>
+            </div>
+          </div>
+
+          <!-- Right: Risk Percentile & Age Matrix -->
+          <div class="sm:col-span-6 flex flex-col justify-between gap-3">
+            <div class="glass-card-sub p-4">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-mono text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">PACE OF AGING</span>
+                <span id="bioPaceStatus" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">OPTIMAL</span>
+              </div>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl font-sans font-bold tracking-tight text-white"><span id="bioPaceVal">--</span></span>
+                <span class="text-xs font-mono text-zinc-400">rate of aging</span>
+              </div>
+              <p id="bioPacePct" class="text-xs font-sans text-zinc-300 mt-1.5 leading-snug">Aging --% slower than chronological clock</p>
+              <div class="mt-3 space-y-1">
+                <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5">
+                  <div id="bioPaceBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-400 rounded-full" style="width: 25%;"></div>
+                </div>
+                <div class="flex justify-between font-mono text-[9px] text-zinc-500 tracking-wider">
+                  <span>SLOW (&lt;1.0x)</span><span>NORMAL (1.0x)</span><span>FAST (&gt;1.0x)</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div id="chronoAgeCard" class="glass-card-sub p-3 cursor-pointer hover:border-white/20 transition group flex flex-col justify-between" title="Click to calibrate Date of Birth & Chronological Age">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">CHRONO AGE</span>
+                  <svg class="w-3 h-3 text-zinc-500 group-hover:text-zinc-200 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="flex items-baseline justify-center gap-1 mt-1.5">
+                  <span id="bioChronologicalVal" class="font-sans text-xl font-bold text-white tracking-tight">--</span>
+                  <span class="text-[10px] font-mono text-zinc-400">yrs</span>
+                </div>
+              </div>
+              <div class="glass-card-sub p-3 flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">BIO AGE</span>
+                  <span id="bioAgeDeltaBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap ml-1">--</span>
+                </div>
+                <div class="flex items-baseline justify-center gap-1 mt-1.5">
+                  <span id="bioAgeVal" class="font-sans text-xl font-bold text-white tracking-tight">--</span>
+                  <span class="text-[10px] font-mono text-zinc-400">yrs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Organ Pillars -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-4 border-t border-white/5 mt-4">
+          <div class="glass-card-sub p-2.5">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="font-mono text-[8.5px] sm:text-[9px] text-zinc-300 font-semibold tracking-tight whitespace-nowrap">1. AUTONOMIC</span>
+              <span id="bioAutonomicDelta" class="font-mono text-[8.5px] sm:text-[9px] text-telemetry-coral font-bold shrink-0 whitespace-nowrap ml-1">--</span>
+            </div>
+            <p id="bioAutonomicVal" class="font-sans text-sm font-bold text-white tracking-tight">--</p>
+            <span id="bioAutonomicStatus" class="text-[9px] font-sans text-zinc-400 block mt-0.5 truncate">Vagal Tone</span>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="font-mono text-[8.5px] sm:text-[9px] text-zinc-300 font-semibold tracking-tight whitespace-nowrap">2. CARDIO</span>
+              <span id="bioCardioDelta" class="font-mono text-[8.5px] sm:text-[9px] text-telemetry-coral font-bold shrink-0 whitespace-nowrap ml-1">--</span>
+            </div>
+            <p id="bioCardioVal" class="font-sans text-sm font-bold text-white tracking-tight">--</p>
+            <span id="bioCardioStatus" class="text-[9px] font-sans text-zinc-400 block mt-0.5 truncate">Bradycardia</span>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="font-mono text-[8.5px] sm:text-[9px] text-zinc-300 font-semibold tracking-tight whitespace-nowrap">3. CELLULAR</span>
+              <span id="bioCellularDelta" class="font-mono text-[8.5px] sm:text-[9px] text-telemetry-amber font-bold shrink-0 whitespace-nowrap ml-1">--</span>
+            </div>
+            <p id="bioCellularVal" class="font-sans text-sm font-bold text-white tracking-tight">--</p>
+            <span id="bioCellularStatus" class="text-[9px] font-sans text-zinc-400 block mt-0.5 truncate">Restorative Sleep</span>
+          </div>
+          <div class="glass-card-sub p-2.5">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="font-mono text-[8.5px] sm:text-[9px] text-zinc-300 font-semibold tracking-tight whitespace-nowrap">4. CARDIO-RESP</span>
+              <span id="bioFitnessDelta" class="font-mono text-[8.5px] sm:text-[9px] text-telemetry-coral font-bold shrink-0 whitespace-nowrap ml-1">--</span>
+            </div>
+            <p id="bioFitnessVal" class="font-sans text-sm font-bold text-white tracking-tight">--</p>
+            <span id="bioFitnessStatus" class="text-[9px] font-sans text-zinc-400 block mt-0.5 truncate">Strain Met</span>
+          </div>
+        </div>
+
+        <!-- Hidden hooks for test assertions -->
+        <span id="bioVascularSummary" class="hidden"></span>
+        <span id="bioPaceDaysSummary" class="hidden"></span>
+        <span id="bioLongevitySummary" class="hidden"></span>
+      </section>
+    </div>
+    <!-- END: Row 2 -->
+
+    <!-- BEGIN: Row 2.5 (Garmin, Oura & Sports Science Biometric Intelligence Suite) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch" data-purpose="sports-science-suite">
+      
+      <!-- Card A: Garmin Training Status & Workload Balance -->
+      <section class="glass-card p-5 flex flex-col justify-between" data-purpose="garmin-training-status-card">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">GARMIN TRAINING STATUS</span>
+            <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">BANISTER EWMA</span>
+          </div>
+          <div class="flex items-baseline justify-between mb-2">
+            <span id="trainingStatusVal" class="text-2xl font-sans font-bold tracking-tight text-emerald-400">Maintaining</span>
+            <span id="trainingLoadVal" class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">Load: --%</span>
+          </div>
+          <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5 mt-2">
+            <div id="trainingLoadBar" class="h-full bg-gradient-to-r from-emerald-500 to-[#00C8FF] rounded-full transition-all duration-700" style="width: 60%;"></div>
+          </div>
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1.5 uppercase tracking-wider">
+            <span>RECOVERY</span><span>PRODUCTIVE</span><span>OVERREACH</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 pt-2 text-center">
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">ACWR RATIO</span>
+              <span id="acwrRatioDisplay" class="font-sans text-xs font-bold text-white block mt-0.5">1.15</span>
+            </div>
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">ACUTE LOAD (ATL)</span>
+              <span id="atlLoadDisplay" class="font-sans text-xs font-bold text-white block mt-0.5">1.72</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+          <span>Fitness Fatigue Model</span>
+          <span class="text-zinc-300">CTL 1.49 · Sweetspot</span>
+        </div>
+      </section>
+
+      <!-- Card B: Garmin Intensity Minutes (Elevate Heart Rate Zones) -->
+      <section class="glass-card p-5 flex flex-col justify-between" data-purpose="garmin-intensity-minutes-card">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">INTENSITY MINUTES</span>
+            <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">AHA 150m GOAL</span>
+          </div>
+          <div class="flex items-baseline justify-between mb-2">
+            <div class="flex items-baseline gap-1.5">
+              <span id="intensityTotalDisplay" class="text-2xl font-sans font-bold tracking-tight text-white">--</span>
+              <span class="text-xs font-mono text-zinc-400">/ 150m wk</span>
+            </div>
+            <span id="intensityGoalProgress" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">--% of wk</span>
+          </div>
+          <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5 mt-2">
+            <div id="intensityProgressBar" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1.5 uppercase tracking-wider">
+            <span>0 MINS</span><span>75 MINS</span><span>150 MINS GOAL</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 pt-2 text-center">
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">MODERATE</span>
+              <span id="intensityModerate" class="font-sans text-xs font-bold text-white block mt-0.5">--m</span>
+            </div>
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">VIGOROUS (2x)</span>
+              <span id="intensityVigorous" class="font-sans text-xs font-bold text-white block mt-0.5">--m</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+          <span>Cardiorespiratory Load</span>
+          <span class="text-zinc-300">50%+ Max HR</span>
+        </div>
+      </section>
+
+      <!-- Card C: Oura Ring Readiness & Circadian Sleep Regularity -->
+      <section class="glass-card p-5 flex flex-col justify-between" data-purpose="oura-readiness-card">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">OURA READINESS &amp; SRI</span>
+            <span id="ouraReadinessLabel" class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">--</span>
+          </div>
+          <div class="flex items-baseline justify-between mb-2">
+            <div class="flex items-baseline gap-1.5">
+              <span id="ouraReadinessVal" class="text-2xl font-sans font-bold tracking-tight text-white">--</span>
+              <span class="text-xs font-mono text-zinc-400">/ 100</span>
+            </div>
+            <span id="ouraReadinessBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">OPTIMAL</span>
+          </div>
+          <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5 mt-2">
+            <div id="ouraReadinessBar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1.5 uppercase tracking-wider">
+            <span>REST (&lt;70)</span><span>GOOD (70-84)</span><span>OPTIMAL (85+)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 pt-2 text-center">
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">CIRCADIAN SRI</span>
+              <span id="sleepRegularityVal" class="font-sans text-xs font-bold text-white block mt-0.5">--%</span>
+            </div>
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">RESP VARIANCE</span>
+              <span id="respVarianceVal" class="font-sans text-xs font-bold text-white block mt-0.5">-- rpm</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+          <span>Sleep &amp; Autonomic Balance</span>
+          <span id="respVarianceStatus" class="text-zinc-300">Stable</span>
+        </div>
+      </section>
+
+      <!-- Card D: Sports Science Performance & Foster Monotony -->
+      <section class="glass-card p-5 flex flex-col justify-between" data-purpose="sports-science-performance-card">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">SPORTS SCIENCE ENGINE</span>
+            <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">FOSTER MONOTONY</span>
+          </div>
+          <div class="flex items-baseline justify-between mb-2">
+            <div class="flex items-baseline gap-1.5">
+              <span id="trainingMonotonyVal" class="text-2xl font-sans font-bold tracking-tight text-white">--</span>
+              <span class="text-xs font-mono text-zinc-400">Index</span>
+            </div>
+            <span id="monotonyStatusBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">OPTIMAL VARIETY</span>
+          </div>
+          <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5 mt-2">
+            <div id="monotonyProgressBar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 rounded-full transition-all duration-700" style="width: 45%;"></div>
+          </div>
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1.5 uppercase tracking-wider">
+            <span>VARIED (&lt;1.5)</span><span>MODERATE (1.5-2)</span><span>MONOTONE (&gt;2)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 pt-2 text-center">
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">AEROBIC EFFICIENCY</span>
+              <span id="aerobicEfficiencySuiteVal" class="font-sans text-xs font-bold text-white block mt-0.5">--</span>
+            </div>
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">CV LOAD STATUS</span>
+              <span id="cvLoadStatusDisplay" class="font-sans text-xs font-bold text-white truncate block mt-0.5">Optimal</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+          <span>Cardiovascular Sweetspot</span>
+          <span class="text-zinc-300">Gabbett 2016</span>
+        </div>
+      </section>
+
+      <!-- Card E: Autonomic Stress Load (Firstbeat & Baevsky SI) -->
+      <section class="glass-card p-5 flex flex-col justify-between" data-purpose="autonomic-stress-card">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-[10px] font-semibold text-zinc-300 uppercase tracking-wider">AUTONOMIC STRESS LOAD</span>
+            <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">BAEVSKY SI</span>
+          </div>
+          <div class="flex items-baseline justify-between mb-2">
+            <div class="flex items-baseline gap-1.5">
+              <span id="stressScoreVal" class="text-2xl font-sans font-bold tracking-tight text-white">--</span>
+              <span class="text-xs font-mono text-zinc-400">/ 100</span>
+            </div>
+            <span id="stressStatusBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">REST &amp; RECOVERY</span>
+          </div>
+          <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden p-0.5 border border-white/5 mt-2">
+            <div id="stressScoreBar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-1.5 uppercase tracking-wider">
+            <span>REST (&lt;26)</span><span>LOW (26-50)</span><span>HIGH (&gt;50)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 pt-2 text-center">
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">BAEVSKY INDEX</span>
+              <span id="baevskyIndexVal" class="font-sans text-xs font-bold text-white block mt-0.5">-- SI</span>
+            </div>
+            <div class="glass-card-sub p-2 flex flex-col justify-center min-h-[48px]">
+              <span class="font-mono text-[8.5px] text-zinc-400 uppercase block truncate">SYMPATHO-VAGAL</span>
+              <span id="sympathovagalVal" class="font-sans text-xs font-bold text-white block mt-0.5">-- LF/HF</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 font-mono text-[10px] text-zinc-400 flex items-center justify-between">
+          <span>Allostatic Balance</span>
+          <span id="stressRestStateVal" class="text-zinc-300">--% Restful State</span>
+        </div>
+      </section>
+
+    </div>
+    <!-- END: Row 2.5 -->
+
+    <!-- BEGIN: Row 3 (24-Hour Continuous Telemetry & Sleep Architecture) -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+      <!-- Card 5: 24-Hour Continuous Heart Rate Telemetry -->
+      <section class="xl:col-span-8 glass-card p-6 flex flex-col justify-between h-full" data-purpose="cardiac-waveform-card">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div class="flex items-center gap-2.5">
+              <div><h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">24-Hour Continuous Heart Rate Telemetry</h2></div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <span class="font-mono text-[9px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">BELOW ZONE</span>
+              <span class="font-mono text-[9px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">FAT BURN</span>
+              <span class="font-mono text-[9px] text-amber-400 font-bold shrink-0 whitespace-nowrap">CARDIO</span>
+              <span class="font-mono text-[9px] text-rose-400 font-bold shrink-0 whitespace-nowrap">PEAK</span>
+            </div>
+          </div>
+          <!-- Telemetry Stats Mini-Strip -->
+          <div class="grid grid-cols-4 gap-2.5 mb-5">
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">RESTING HR</span>
+              <p id="chartRestingHr" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">MIN / MAX</span>
+              <p class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight"><span id="chartMinHr">--</span> / <span id="chartMaxHr">--</span> bpm</p>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">ACTIVE ZONE</span>
+              <p id="chartAzmTime" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">AEROBIC EFF.</span>
+              <p id="chartAerobicEff" class="font-sans text-sm font-bold text-white mt-0.5 tracking-tight">--</p>
+            </div>
+          </div>
+          <!-- Precision Waveform SVG Chart / Chart.js Overlay with Dedicated Gutter Labels -->
+          <div class="relative w-full h-48 my-2 pt-2 pb-2 flex items-stretch">
+            <!-- Left Y-Axis labels (OUTSIDE the plotting canvas) -->
+            <div class="w-14 shrink-0 relative text-right pr-2 text-[9px] font-mono text-zinc-500 pointer-events-none select-none">
+              <span class="absolute top-2 right-2 -translate-y-1/2">180 bpm</span>
+              <span class="absolute top-[40%] right-2 -translate-y-1/2">120 bpm</span>
+              <span class="absolute top-[80%] right-2 -translate-y-1/2">60 bpm</span>
+              <span class="absolute bottom-2 right-2 translate-y-1/2">30 bpm</span>
+            </div>
+
+            <!-- Dedicated Plot Area -->
+            <div class="relative flex-1 h-full">
+              <!-- Grid Lines (strictly aligned to exact mathematical bpm percentages) -->
+              <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-2 left-0 right-0 border-b border-white/5"></div>
+                <div class="absolute top-[40%] left-0 right-0 border-b border-white/5"></div>
+                <div class="absolute top-[80%] left-0 right-0 border-b border-white/5"></div>
+                <div class="absolute bottom-2 left-0 right-0 border-b border-white/5"></div>
+              </div>
+              <!-- Canvas for Chart.js rendering -->
+              <canvas id="hrChart" class="w-full h-full relative z-10"></canvas>
+            </div>
+
+            <!-- Right Zone labels (OUTSIDE the plotting canvas) -->
+            <div class="w-14 shrink-0 relative text-left pl-2 text-[9px] font-mono text-zinc-500 pointer-events-none select-none">
+              <span class="absolute top-2 left-2 -translate-y-1/2">Peak</span>
+              <span class="absolute top-[40%] left-2 -translate-y-1/2">Cardio</span>
+              <span class="absolute top-[80%] left-2 -translate-y-1/2">Resting</span>
+              <span class="absolute bottom-2 left-2 translate-y-1/2">Baseline</span>
+            </div>
+          </div>
+          <!-- X-Axis Timeline Markers (aligned precisely with center plot area) -->
+          <div class="flex justify-between font-mono text-[9px] text-zinc-500 mt-2 pl-14 pr-14 tracking-wider">
+            <span>12 AM</span>
+            <span>6 AM</span>
+            <span>12 PM</span>
+            <span>6 PM</span>
+            <span>12 AM</span>
+          </div>
+        </div>
+
+        <!-- Metric hooks -->
+        <span id="aerobicEffDisplay" class="hidden"></span>
+        <span id="avgHrDisplay" class="hidden"></span>
+      </section>
+
+      <!-- Card 6: Sleep Architecture Hypnogram -->
+      <section class="xl:col-span-4 glass-card p-6 flex flex-col justify-between h-full" data-purpose="sleep-hypnogram-card">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <h3 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Sleep Architecture</h3>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span id="sleepScore" class="font-sans text-xl font-bold tracking-tight text-white">--</span>
+              <span id="sleepQualityTag" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">NO DATA</span>
+            </div>
+          </div>
+          <!-- Sleep Stats Grid -->
+          <div class="grid grid-cols-3 gap-2 my-4 text-center">
+            <div class="glass-card-sub p-2.5">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">DURATION</span>
+              <span id="sleepDuration" class="font-sans text-sm font-bold text-white mt-1 block tracking-tight">--</span>
+            </div>
+            <div class="glass-card-sub p-2.5">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">IN BED</span>
+              <span id="timeInBed" class="font-sans text-sm font-bold text-white mt-1 block tracking-tight">--</span>
+            </div>
+            <div class="glass-card-sub p-2.5">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">EFFICIENCY</span>
+              <span id="sleepEfficiency" class="font-sans text-sm font-bold text-white mt-1 block tracking-tight">--</span>
+            </div>
+          </div>
+          <!-- Segmented Sleep Architecture Bar -->
+          <div class="space-y-2 mt-5">
+            <span class="font-mono text-[10px] text-zinc-400 uppercase tracking-wider block">HYPNOGRAM STAGE BREAKDOWN</span>
+            <div class="w-full h-3.5 rounded-full overflow-hidden flex bg-black/40 border border-white/5">
+              <div id="barDeep" class="h-full" style="width: 0%; background-color: rgb(44, 48, 56);" title="Deep Sleep"></div>
+              <div id="barRem" class="h-full" style="width: 0%; background-color: rgb(92, 99, 112);" title="REM Sleep"></div>
+              <div id="barLight" class="h-full" style="width: 0%; background-color: rgb(226, 179, 143);" title="Light Sleep"></div>
+              <div id="barWake" class="h-full" style="width: 0%; background-color: rgb(223, 107, 98);" title="Awake"></div>
+            </div>
+            <!-- Legend Pills -->
+            <div class="grid grid-cols-2 gap-2 pt-3 font-mono text-[10px]">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-xs" style="background-color: #2c3038; border: 1px solid rgba(255,255,255,0.15);"></span>
+                <span class="text-zinc-300">Deep: <span id="deepMin">--</span> (<span id="deepPct">--%</span>)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-xs" style="background-color: #5c6370;"></span>
+                <span class="text-zinc-300">REM: <span id="remMin">--</span> (<span id="remPct">--%</span>)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-xs" style="background-color: #e2b38f;"></span>
+                <span class="text-zinc-300">Light: <span id="lightMin">--</span> (<span id="lightPct">--%</span>)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-xs" style="background-color: #df6b62;"></span>
+                <span class="text-zinc-300">Awake: <span id="wakeMin">--</span> (<span id="wakePct">--%</span>)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex items-center justify-between font-mono text-[10px] text-zinc-400 mt-4">
+          <span class="tracking-wide">SLEEP STAGE RESTORATION</span>
+          <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+            <span class="text-zinc-300 font-semibold uppercase tracking-wide">PEAK CELLULAR RECOVERY</span>
+          </div>
+        </div>
+        <span id="sleepScheduleSpan" class="hidden"></span>
+      </section>
+    </div>
+    <!-- END: Row 3 -->
+
+    <!-- BEGIN: Row 4 (7-Day Analytics Trends & Sleep Coach Side-by-Side) -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+      <!-- Card: 7-Day Analytics & Biometric Trends (Width matches Heart Rate Telemetry above: xl:col-span-8) -->
+      <section id="analyticsSection" class="xl:col-span-8 glass-card p-6 flex flex-col justify-between h-full" data-purpose="7-day-analytics-card">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+              <span class="font-mono text-[10px] text-zinc-400 uppercase tracking-wider block">ANALYTICS</span>
+              <h2 class="font-sans text-xl font-bold tracking-tight text-white mt-0.5">7-Day Trends</h2>
+            </div>
+            <div class="flex items-center" id="trendTabContainer">
+              <button class="pb-seg-btn" data-trend="steps">Steps</button>
+              <button class="pb-seg-btn" data-trend="rhr">Resting HR</button>
+              <button class="pb-seg-btn active" data-trend="sleep">Sleep</button>
+              <button class="pb-seg-btn" data-trend="hrv">HRV</button>
+            </div>
+          </div>
+          <div class="relative w-full h-64 my-2">
+            <canvas id="trendChart" class="w-full h-full"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card: Sleep Coach & Bedtime Planner (Side column matches Sleep Architecture above: xl:col-span-4) -->
+      <section id="sleepCoachSection" class="xl:col-span-4 glass-card p-6 flex flex-col justify-between h-full" data-purpose="sleep-coach-card">
+        <div>
+          <div class="flex flex-col gap-3 mb-4">
+            <div class="flex items-center justify-between">
+              <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Sleep Coach &amp; Bedtime Planner</h2>
+              <span class="font-mono text-[9px] sm:text-[10px] text-zinc-400 font-bold shrink-0 whitespace-nowrap">CIRCADIAN</span>
+            </div>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <!-- Target Selector Pill -->
+              <div id="coachTargetControl" class="flex items-center bg-[#1c1d22] border border-white/[0.08] p-1 rounded-full gap-1">
+                <button type="button" id="targetPeak" data-target="peak" onclick="window.selectCoachTarget('peak')" class="pb-seg-btn active cursor-pointer">Peak</button>
+                <button type="button" id="targetMaintain" data-target="maintain" onclick="window.selectCoachTarget('maintain')" class="pb-seg-btn cursor-pointer">Maintain</button>
+                <button type="button" id="targetGetBy" data-target="getBy" onclick="window.selectCoachTarget('getBy')" class="pb-seg-btn cursor-pointer">Get By</button>
+              </div>
+              <!-- Target Wake Input -->
+              <div class="flex items-center gap-1.5 glass-card-sub px-2.5 py-1 text-xs">
+                <span class="font-mono text-[10px] text-zinc-400 uppercase">Wake</span>
+                <input type="time" id="coachWakeInput" value="07:30" onchange="window.handleCoachWakeChange(this.value)" oninput="window.handleCoachWakeChange(this.value)" class="bg-transparent border-none text-white font-mono text-xs p-0 focus:ring-0 cursor-pointer"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Key Sleep Coach Target Tiles (2x2 Grid for Side Column) -->
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">Target Sleep</span>
+              <p id="coachTargetSleepVal" class="font-sans text-base font-bold text-white mt-0.5 tracking-tight">--</p>
+              <span id="coachTargetBadge" class="text-[9px] font-mono text-telemetry-coral mt-0.5 block">--</span>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">Time In Bed</span>
+              <p id="coachTimeInBedVal" class="font-sans text-base font-bold text-white mt-0.5 tracking-tight">--</p>
+              <span class="text-[9px] font-mono text-zinc-400 mt-0.5 block truncate">Buffered for eff.</span>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">Recommended Bedtime</span>
+              <p id="coachBedtimeVal" class="font-sans text-base font-bold text-telemetry-amber mt-0.5 tracking-tight">--:--</p>
+              <span class="text-[9px] font-mono text-zinc-400 mt-0.5 block truncate">Wake <span id="coachWakeTimeVal">07:30 AM</span></span>
+            </div>
+            <div class="glass-card-sub p-3 text-center">
+              <span class="font-mono text-[9px] text-zinc-400 uppercase block tracking-wider">Sleep Gate Window</span>
+              <p id="coachSleepGateStatus" class="font-sans text-xs font-bold text-telemetry-sage mt-0.5 tracking-tight">--</p>
+              <span class="text-[9px] font-mono text-zinc-400 mt-0.5 block truncate">Melatonin Onset</span>
+            </div>
+          </div>
+
+          <!-- Additive Sleep Breakdown Strip -->
+          <div class="glass-card-sub p-2.5 flex flex-wrap items-center justify-between gap-1 text-[10.5px] font-mono">
+            <div class="flex flex-wrap items-center gap-2 text-zinc-300">
+              <span>Base: <strong id="coachBaselineVal" class="text-white">--</strong></span>
+              <span>+Strain: <strong id="coachStrainCompVal" class="text-telemetry-coral">--</strong></span>
+              <span>+Debt: <strong id="coachDebtRepayVal" class="text-telemetry-amber">--</strong></span>
+              <span>=Total: <strong id="coachTotalNeedSummary" class="text-white">--</strong></span>
+            </div>
+          </div>
+
+          <!-- Hidden bars for backward compatibility -->
+          <div id="barBaseline" class="hidden"></div>
+          <div id="barStrain" class="hidden"></div>
+          <div id="barDebt" class="hidden"></div>
+        </div>
+      </section>
+    </div>
+    <!-- END: Row 4 -->
+
+    <!-- BEGIN: Row 5 (Biometric Intelligence Council & Real-Time Gemini AI) -->
+    <section id="aiCouncilSection" class="glass-card p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+        <div class="flex items-center gap-2.5">
+          <h2 class="font-sans text-xs font-bold uppercase tracking-wider text-zinc-200">Biometric Intelligence Council</h2>
+          <span id="geminiStatusBadge" class="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold shrink-0 whitespace-nowrap">GEMINI READY</span>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <!-- 3-Tier Model Dock: Lite, Flash, Pro -->
+          <div class="flex items-center bg-[#1c1d22] border border-white/[0.08] p-1 rounded-full gap-1">
+            <button id="modelTierLiteBtn" type="button" onclick="window.selectGeminiTier('gemini-flash-lite-latest')" class="text-xs font-medium px-3 py-1 rounded-full text-white/70 hover:text-white transition cursor-pointer">Lite</button>
+            <button id="modelTierFlashBtn" type="button" onclick="window.selectGeminiTier('gemini-flash-latest')" class="text-xs font-medium px-3 py-1 rounded-full bg-white text-black font-semibold shadow-sm cursor-pointer">Flash</button>
+            <button id="modelTierProBtn" type="button" onclick="window.selectGeminiTier('gemini-pro-latest')" class="text-xs font-medium px-3 py-1 rounded-full text-white/70 hover:text-white transition cursor-pointer">Pro</button>
+          </div>
+          <!-- Gemini API Key Button -->
+          <button id="openGeminiKeyModalBtn" class="glass-card-sub px-3 py-1.5 text-xs text-zinc-300 hover:text-white flex items-center gap-1.5 rounded-full border border-white/10 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            <span id="geminiKeyBtnLabel" class="font-mono text-[10px]">API Key</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Council Specialist Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4">
+        <button id="councilTabCardio" class="council-tab active" onclick="window.switchCouncilTab('cardio')">Cardiovascular &amp; Autonomic</button>
+        <button id="councilTabNutrition" class="council-tab" onclick="window.switchCouncilTab('nutrition')">Metabolic &amp; Glycogen</button>
+        <button id="councilTabTrainer" class="council-tab" onclick="window.switchCouncilTab('trainer')">Training Readiness</button>
+        <button id="councilTabSleep" class="council-tab" onclick="window.switchCouncilTab('sleep')">Circadian &amp; Sleep</button>
+      </div>
+
+      <!-- Action Button Bar -->
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <span class="font-mono text-[10px] text-zinc-400">Synthesize authentic raw Google Health telemetry with real-time AI</span>
+        <button id="runGeminiAnalysisBtn" onclick="window.triggerGeminiAnalysis()" class="bg-white text-black hover:bg-neutral-200 active:scale-95 text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition flex items-center gap-2 cursor-pointer">
+          <span id="geminiBtnSpinner" class="hidden w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
+          <span id="geminiBtnText">Analyze Telemetry</span>
+          <span id="geminiBtnSparkle" class="hidden"></span>
+        </button>
+      </div>
+
+      <!-- Council Content Output Area -->
+      <div id="councilContentArea" class="glass-card-sub p-4 mb-4 min-h-[140px] text-sm text-zinc-300 leading-relaxed font-sans border border-white/5">
+        <!-- Default content populated by renderExpertCouncil(data) -->
+      </div>
+
+      <!-- Interactive Gemini Chat Dock -->
+      <div id="geminiChatArea" class="space-y-3 pt-3 border-t border-white/5">
+        <div class="flex items-center gap-2">
+          <input type="text" id="geminiChatInput" onkeydown="if(event.key==='Enter'){event.preventDefault();window.askGeminiQuestion();}" placeholder="Ask Gemini about your telemetry (e.g. Can I perform heavy squats today?)..." class="w-full bg-[#16181d] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 font-sans"/>
+          <button id="sendGeminiChatBtn" onclick="window.askGeminiQuestion()" class="bg-white text-black hover:bg-neutral-200 active:scale-95 text-xs font-semibold px-4 py-2.5 rounded-xl shrink-0 transition cursor-pointer">Send</button>
+        </div>
+        <div id="geminiChatReplyBox" class="hidden glass-card-sub p-4 text-xs text-zinc-300 border border-white/5 leading-relaxed font-sans"></div>
+      </div>
+    </section>
+    <!-- END: Row 5 -->
+
+  </div>
+  <!-- END: MainDashboardContainer -->
+
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+  <!-- MODALS (Stats for Nerds, Settings, Gemini Key, Health Connect)          -->
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+
+  <!-- Stats for Nerds Modal -->
+  <div id="nerdsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-white">Stats for Nerds · Raw Biometric Telemetry</h3>
+        <button id="closeNerdsModal" class="text-zinc-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">HR Samples</span><span id="nerdHrCount" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">HRV Samples</span><span id="nerdHrvCount" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">SpO2 Samples</span><span id="nerdSpo2Count" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Intraday Points</span><span id="nerdIntradayCount" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">LF Power</span><span id="nerdLfPower" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">HF Power</span><span id="nerdHfPower" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">LF/HF Ratio</span><span id="nerdLfHfRatio" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">HF Tone</span><span id="nerdHfTone" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Deep Sleep Resp</span><span id="nerdDeepSleepResp" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">REM Sleep Resp</span><span id="nerdRemSleepResp" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Light Sleep Resp</span><span id="nerdLightSleepResp" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Full Sleep Resp</span><span id="nerdFullSleepResp" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Resp SD</span><span id="nerdRespSd" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Awakenings</span><span id="nerdSleepAwakenings" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">SNR</span><span id="nerdSnr" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Distance (m)</span><span id="nerdDistMeters" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Steps Count</span><span id="nerdStepsCount" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Sleep Stages</span><span id="nerdSleepStages" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Meta Method</span><span id="nerdMetaMethod" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Meta Model</span><span id="nerdMetaModel" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Meta Platform</span><span id="nerdMetaPlatform" class="text-white">--</span></div>
+        <div class="glass-card-sub p-2.5"><span class="text-zinc-500 block">Meta TZ</span><span id="nerdMetaTz" class="text-white">--</span></div>
+      </div>
+      <div class="flex items-center justify-between pt-2">
+        <button id="copyNerdsJsonBtn" class="bg-white/10 text-white hover:bg-white/20 text-xs px-3 py-1.5 rounded-lg font-mono flex items-center gap-1.5 transition cursor-pointer">
+          <span id="copyNerdsJsonText">Copy JSON Telemetry</span>
+        </button>
+      </div>
+      <pre id="nerdsJsonViewer" class="bg-black/50 p-3 rounded-xl text-[10px] font-mono text-zinc-400 overflow-x-auto max-h-48"></pre>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-lg w-full max-h-[88vh] flex flex-col p-4 sm:p-5 space-y-0 rounded-2xl shadow-2xl border border-white/15">
+      <!-- Fixed Header -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-2.5 shrink-0">
+        <h3 class="font-sans text-xs sm:text-sm font-bold uppercase tracking-wider text-white">System Settings &amp; API Configuration</h3>
+        <button id="closeSettingsModal" class="text-zinc-400 hover:text-white text-lg font-bold px-2 py-0.5 cursor-pointer">✕</button>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="overflow-y-auto pr-1 sm:pr-1.5 space-y-3.5 py-3 flex-1 custom-scrollbar">
+        <!-- Connected Google Account Section -->
+        <div class="glass-card-sub p-3 rounded-xl flex items-center justify-between border border-white/10">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-mono font-bold text-xs text-white overflow-hidden shrink-0">
+              <img id="settingsAvatarImg" src="" alt="Avatar" class="w-full h-full object-cover hidden"/>
+              <span id="settingsAvatarFallback">--</span>
+            </div>
+            <div class="min-w-0">
+              <div class="font-sans font-bold text-xs sm:text-sm text-white truncate" id="settingsUserName">Connect Device</div>
+              <div class="font-mono text-[9px] sm:text-[10px] text-zinc-400 truncate" id="settingsUserEmail">Offline</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <a href="/auth/switch" id="settingsSwitchAccountBtn" class="bg-white/10 hover:bg-white/20 text-white px-2.5 py-1 rounded-lg font-mono text-[10px] transition cursor-pointer flex items-center gap-1.5 border border-white/10" title="Switch to another Google Account">
+              <span>Switch Account</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- User Demographic Calibration: Date of Birth & Gender -->
+        <div class="glass-card-sub p-3 sm:p-3.5 rounded-xl border border-white/10 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[10px] text-zinc-300 font-semibold uppercase tracking-wider">Demographic &amp; Chronological Calibration</span>
+            <span class="text-[9px] font-mono text-zinc-500">Auto-aging</span>
+          </div>
+          <p class="text-[10.5px] text-zinc-400 leading-relaxed font-sans">
+            Setting your birth date anchors your chronological clock, calibrating KDM biological age, vagal decline curves, and HR max as time advances.
+          </p>
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            <div>
+              <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Date of Birth</label>
+              <input type="date" id="profileDobInput" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0 cursor-pointer"/>
+            </div>
+            <div>
+              <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Biological Sex</label>
+              <select id="profileGenderSelect" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0 cursor-pointer">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            <div>
+              <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Height (cm)</label>
+              <input type="number" id="profileHeightInput" placeholder="Auto-synced (cm)" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0 cursor-pointer"/>
+            </div>
+            <div>
+              <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Weight (kg)</label>
+              <input type="number" step="0.1" id="profileWeightInput" placeholder="Auto-synced (kg)" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0 cursor-pointer"/>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <div class="text-[10px] font-mono text-zinc-400 flex items-center gap-2">
+              <span>Age: <strong id="profileCalculatedAge" class="text-white font-bold">--</strong></span>
+              <span>·</span>
+              <span>BMI: <strong id="profileCalculatedBmi" class="text-white font-bold">--</strong></span>
+            </div>
+            <button type="button" id="saveProfileBtn" class="bg-white text-black font-semibold px-3 py-1.5 rounded-lg font-mono text-[10px] hover:bg-zinc-200 transition cursor-pointer shadow-sm">
+              Save Calibration
+            </button>
+          </div>
+
+          <!-- Saved Biometric Profile Metrics (Height, Weight, BMI, BMR) -->
+          <div class="pt-2.5 border-t border-white/10">
+            <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider block mb-1.5">Saved Biometrics &amp; Metabolic Baseline</span>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+              <div class="glass-card-sub p-2 flex flex-col justify-between min-h-[64px]">
+                <span class="font-mono text-[8.5px] text-zinc-400 uppercase tracking-wider block truncate">HEIGHT</span>
+                <div class="flex items-baseline justify-center gap-1 my-0.5">
+                  <span id="userHeightVal" class="font-sans text-sm sm:text-base font-bold text-white tracking-tight">--</span>
+                  <span class="text-[8.5px] font-mono text-zinc-400">cm</span>
+                </div>
+                <span id="userHeightStatus" class="font-mono text-[8px] font-bold text-zinc-400 truncate inline-block mx-auto">NOT LOGGED</span>
+              </div>
+              <div class="glass-card-sub p-2 flex flex-col justify-between min-h-[64px]">
+                <span class="font-mono text-[8.5px] text-zinc-400 uppercase tracking-wider block truncate">WEIGHT</span>
+                <div class="flex items-baseline justify-center gap-1 my-0.5">
+                  <span id="userWeightVal" class="font-sans text-sm sm:text-base font-bold text-white tracking-tight">--</span>
+                  <span class="text-[8.5px] font-mono text-zinc-400">kg</span>
+                </div>
+                <span id="userWeightStatus" class="font-mono text-[8px] font-bold text-zinc-400 truncate inline-block mx-auto">NOT LOGGED</span>
+              </div>
+              <div class="glass-card-sub p-2 flex flex-col justify-between min-h-[64px]">
+                <span class="font-mono text-[8.5px] text-zinc-400 uppercase tracking-wider block truncate">BMI INDEX</span>
+                <div class="flex items-baseline justify-center gap-1 my-0.5">
+                  <span id="userBmiVal" class="font-sans text-sm sm:text-base font-bold text-white tracking-tight">--</span>
+                  <span class="text-[8.5px] font-mono text-zinc-400">kg/m²</span>
+                </div>
+                <span id="userBmiBadge" class="font-mono text-[8px] font-bold text-zinc-400 truncate inline-block mx-auto">--</span>
+                <span id="userBmiCategory" class="sr-only">--</span>
+              </div>
+              <div class="glass-card-sub p-2 flex flex-col justify-between min-h-[64px]">
+                <span class="font-mono text-[8.5px] text-zinc-400 uppercase tracking-wider block truncate">BMR METABOLISM</span>
+                <div class="flex items-baseline justify-center gap-1 my-0.5">
+                  <span id="userBmrVal" class="font-sans text-sm sm:text-base font-bold text-white tracking-tight">--</span>
+                  <span class="text-[8.5px] font-mono text-zinc-400">kcal</span>
+                </div>
+                <span class="font-mono text-[8px] font-bold text-zinc-400 truncate inline-block mx-auto">BASAL RATE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="apiConfigForm" class="space-y-3 text-xs font-sans">
+          <div>
+            <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Client ID</label>
+            <input type="text" id="clientIdInput" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0"/>
+          </div>
+          <div>
+            <label class="block font-mono text-[9px] text-zinc-400 uppercase mb-1">Client Secret</label>
+            <input type="password" id="clientSecretInput" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono text-xs focus:ring-0"/>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <button type="button" id="copyRedirectBtn" class="text-zinc-400 hover:text-white font-mono text-[10px] underline">Copy OAuth Redirect</button>
+            <span id="redirectUriDisplay" class="hidden"></span>
+            <button type="button" id="copyWebhookBtn" class="text-zinc-400 hover:text-white font-mono text-[10px] underline">Copy Webhook URL</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pinned Footer Actions (Always accessible, never cut off!) -->
+      <div class="pt-2.5 border-t border-white/10 flex items-center justify-between shrink-0">
+        <button type="button" id="toggleDemoModeBtn" class="bg-white/10 text-white px-3 py-1.5 rounded-lg font-mono text-[10px] hover:bg-white/20 transition cursor-pointer">Toggle Demo Mode</button>
+        <button type="button" id="logoutBtn" class="bg-red-500/20 text-red-300 border border-red-500/30 px-3 py-1.5 rounded-lg font-mono text-[10px] hover:bg-red-500/30 transition cursor-pointer">Disconnect Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gemini Key Modal -->
+  <div id="geminiKeyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-white">Google Gemini API Configuration</h3>
+        <button id="closeGeminiKeyModal" class="text-zinc-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      </div>
+      <form id="geminiKeyForm" class="space-y-3 text-xs font-sans">
+        <div>
+          <label class="block font-mono text-[10px] text-zinc-400 uppercase mb-1">Gemini API Key</label>
+          <div class="flex items-center gap-1.5">
+            <input type="password" id="modalGeminiKeyInput" placeholder="AIzaSy..." class="w-full bg-[#16181d] border border-white/10 rounded-lg px-3 py-2 text-white font-mono text-xs focus:ring-0"/>
+            <button type="button" id="toggleGeminiKeyVisibility" class="px-2 py-2 glass-card-sub text-zinc-400 hover:text-white rounded-lg">👁</button>
+          </div>
+        </div>
+        <div>
+          <label class="block font-mono text-[10px] text-zinc-400 uppercase mb-1">Model Tier</label>
+          <select id="modalGeminiModelSelect" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-3 py-2 text-white font-mono text-xs focus:ring-0">
+            <option value="gemini-flash-latest">Flash · Balanced (Recommended)</option>
+            <option value="gemini-flash-lite-latest">Flash Lite · Ultra Fast</option>
+            <option value="gemini-pro-latest">Pro · Deep Clinical Reasoning</option>
+          </select>
+        </div>
+        <div id="geminiKeyModalMsg" class="text-[11px] font-mono"></div>
+        <div class="flex items-center justify-between pt-3 border-t border-white/10">
+          <button type="button" id="removeGeminiKeyBtn" class="text-rose-400 hover:text-rose-300 font-mono text-[10px] underline cursor-pointer">Remove Key</button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="cancelGeminiKeyBtn" class="glass-card-sub px-3 py-1.5 rounded-lg text-zinc-300 hover:text-white cursor-pointer">Cancel</button>
+            <button type="submit" id="saveGeminiKeyBtn" class="bg-white text-black font-semibold px-4 py-1.5 rounded-lg hover:bg-neutral-200 transition cursor-pointer">Save Key</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Health Connect Modal -->
+  <div id="healthConnectModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-white">Health Connect Bridge</h3>
+        <button id="closeHealthConnectModal" class="text-zinc-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      </div>
+      <div id="dropArea" class="glass-card-sub p-6 border-2 border-dashed border-white/15 rounded-xl text-center cursor-pointer hover:border-white/30 transition">
+        <p class="text-xs text-zinc-300 mb-2">Drag and drop Health Connect JSON export here or click to browse</p>
+        <input type="file" id="jsonFileInput" class="hidden" accept=".json"/>
+      </div>
+      <div id="importSuccessMsg" class="hidden text-xs text-emerald-400 font-mono">
+        <span id="importSuccessText">Data imported successfully!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wallpaper & Ambiance Customizer Modal -->
+  <div id="wallpaperModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-xl w-full p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-white">Dashboard Ambiance &amp; Background</h3>
+          <p class="text-[11px] text-zinc-400 font-sans mt-0.5">Customize your glass surface backdrop, presets, image uploads, or custom CSS gradients.</p>
+        </div>
+        <button id="closeWallpaperModalBtn" class="text-zinc-400 hover:text-white text-lg font-bold px-2 cursor-pointer transition">✕</button>
+      </div>
+
+      <!-- Section 1: Curated Wallpaper Presets -->
+      <div class="space-y-2">
+        <label class="block font-mono text-[10px] text-zinc-300 uppercase tracking-wider font-semibold">1. Curated Atmosphere Presets</label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="wallpaperPresetsGrid">
+          <button type="button" data-preset="granite" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: linear-gradient(135deg, #18191d 0%, #0d0e11 100%);"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Studio Granite</span>
+            <span class="text-[9px] font-mono text-zinc-400">Default Texture</span>
+          </button>
+          <button type="button" data-preset="obsidian" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: #050608;"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Obsidian OLED</span>
+            <span class="text-[9px] font-mono text-zinc-400">Pure Pitch Black</span>
+          </button>
+          <button type="button" data-preset="midnight-wine" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: radial-gradient(circle at 50% 0%, #2b0b14 0%, #0a0408 100%);"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Midnight Wine</span>
+            <span class="text-[9px] font-mono text-zinc-400">Deep Burgundy Glass</span>
+          </button>
+          <button type="button" data-preset="cyberpunk-navy" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: radial-gradient(circle at 50% 10%, #0d1e38 0%, #050b14 100%);"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Cyberpunk Slate</span>
+            <span class="text-[9px] font-mono text-zinc-400">Subtle Deep Navy</span>
+          </button>
+          <button type="button" data-preset="emerald-matrix" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: radial-gradient(circle at 50% 10%, #082115 0%, #030d08 100%);"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Emerald Matrix</span>
+            <span class="text-[9px] font-mono text-zinc-400">Forest Dark Glass</span>
+          </button>
+          <button type="button" data-preset="aurora-mesh" class="preset-btn glass-card-sub p-2.5 rounded-xl border border-white/10 hover:border-white/30 text-left transition cursor-pointer flex flex-col justify-between h-20 group">
+            <div class="w-full h-7 rounded-lg border border-white/10 mb-1" style="background: linear-gradient(135deg, #1c1033 0%, #0d1f2d 50%, #070913 100%);"></div>
+            <span class="text-xs font-semibold text-white group-hover:text-emerald-400">Aurora Twilight</span>
+            <span class="text-[9px] font-mono text-zinc-400">Violet &amp; Teal Depth</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2: Custom Image Wallpaper (URL or File Upload) -->
+      <div class="space-y-2 pt-2 border-t border-white/10">
+        <label class="block font-mono text-[10px] text-zinc-300 uppercase tracking-wider font-semibold">2. Custom Wallpaper Image</label>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <input type="url" id="customBgUrlInput" placeholder="Paste image URL (e.g. Unsplash, Wallpaper direct link)..." class="w-full bg-[#16181d] border border-white/10 rounded-lg px-3 py-2 text-white font-mono text-xs focus:ring-0 placeholder:text-zinc-500"/>
+            <button type="button" id="applyBgUrlBtn" class="bg-white/10 text-white font-mono text-xs px-3.5 py-2 rounded-lg hover:bg-white/20 transition cursor-pointer shrink-0">Apply URL</button>
+          </div>
+          <div class="flex items-center justify-between text-xs text-zinc-400">
+            <span>Or upload an image file from your device:</span>
+            <button type="button" id="uploadBgFileBtn" class="bg-white/10 text-white font-mono text-[11px] px-3 py-1.5 rounded-lg hover:bg-white/20 transition cursor-pointer">Browse File...</button>
+            <input type="file" id="bgFileInput" accept="image/*" class="hidden"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Custom CSS Gradient -->
+      <div class="space-y-2 pt-2 border-t border-white/10">
+        <label class="block font-mono text-[10px] text-zinc-300 uppercase tracking-wider font-semibold">3. Custom CSS Gradient</label>
+        <div class="flex items-center gap-2">
+          <input type="text" id="customGradientInput" placeholder="e.g. radial-gradient(circle, #1a1a2e 0%, #16213e 100%)" class="w-full bg-[#16181d] border border-white/10 rounded-lg px-3 py-2 text-white font-mono text-xs focus:ring-0 placeholder:text-zinc-500"/>
+          <button type="button" id="applyGradientBtn" class="bg-white/10 text-white font-mono text-xs px-3.5 py-2 rounded-lg hover:bg-white/20 transition cursor-pointer shrink-0">Apply</button>
+        </div>
+      </div>
+
+      <!-- Section 4: Fine-Tuning (Dimmer & Blur) -->
+      <div class="space-y-3 pt-2 border-t border-white/10">
+        <label class="block font-mono text-[10px] text-zinc-300 uppercase tracking-wider font-semibold">4. Fine-Tune Contrast &amp; Glass Depth</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="glass-card-sub p-3 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-zinc-300 font-sans">Dimmer Tint</span>
+              <span id="bgDimmerVal" class="font-mono text-xs text-emerald-400 font-semibold">25%</span>
+            </div>
+            <input type="range" id="bgDimmerSlider" min="0" max="85" value="25" class="w-full accent-emerald-400 cursor-pointer"/>
+            <span class="text-[9px] font-mono text-zinc-500 block">Darkens wallpaper for high card readability</span>
+          </div>
+          <div class="glass-card-sub p-3 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-zinc-300 font-sans">Background Blur</span>
+              <span id="bgBlurVal" class="font-mono text-xs text-emerald-400 font-semibold">0px</span>
+            </div>
+            <input type="range" id="bgBlurSlider" min="0" max="40" value="0" class="w-full accent-emerald-400 cursor-pointer"/>
+            <span class="text-[9px] font-mono text-zinc-500 block">Softens wallpaper details behind pure glass</span>
+          </div>
+        </div>
+
+        <!-- Auto-Contrast Adaptation for Light Wallpapers -->
+        <div class="glass-card-sub p-3 rounded-xl flex items-center justify-between border border-white/10">
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" id="autoContrastToggle" checked class="accent-emerald-400 w-4 h-4 rounded cursor-pointer"/>
+            <div>
+              <label for="autoContrastToggle" class="text-xs font-sans text-zinc-200 cursor-pointer block font-medium">Auto-Protect Contrast on Light Wallpapers</label>
+              <span class="text-[9px] font-mono text-zinc-400 block">Senses bright wallpapers and activates deep obsidian frosted glass</span>
+            </div>
+          </div>
+          <span id="autoContrastBadge" class="hidden text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap">Auto-Contrast Active</span>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex items-center justify-between pt-3 border-t border-white/10">
+        <button type="button" id="resetBgBtn" class="text-rose-400 hover:text-rose-300 font-mono text-[10px] underline cursor-pointer">Reset to Default</button>
+        <div class="flex items-center gap-2">
+          <button type="button" id="saveWallpaperBtn" class="bg-white text-black font-semibold font-sans text-xs px-4 py-2 rounded-lg hover:bg-neutral-200 transition cursor-pointer">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Tactile SYNC Script from Google Stitch -->
+  <script>
+    (function() {
+      const syncBtn = document.getElementById('sync-btn');
+      const syncIcon = document.getElementById('sync-icon');
+      const syncLabel = document.getElementById('sync-label');
+
+      if (!syncBtn) return;
+
+      let isSyncing = false;
+
+      syncBtn.addEventListener('click', function() {
+        if (isSyncing) return;
+        isSyncing = true;
+
+        syncIcon.classList.add('spin-active');
+        syncBtn.classList.add('opacity-80');
+
+        // Trigger dashboard data fetch
+        if (typeof window.fetchDashboardData === 'function') {
+          const datePicker = document.getElementById('datePicker');
+          window.fetchDashboardData(datePicker ? datePicker.value : undefined);
+        }
+
+        setTimeout(function() {
+          syncIcon.classList.remove('spin-active');
+          syncBtn.classList.remove('opacity-80');
+          isSyncing = false;
+        }, 1000);
+      });
+    })();
+  </script>
+
+  <!-- Application Logic -->
+  <script src="app.js?v=5.0"></script>
+</body>
+</html>

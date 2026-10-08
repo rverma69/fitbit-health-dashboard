@@ -1,0 +1,321 @@
+/* ==========================================================================
+   Statix Precision Dashboard — Biometric Intelligence OS v4.8
+   Replicated strictly from Google Stitch design specifications
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap');
+
+@font-face {
+  font-family: 'Conthrax';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/conthrax-sb.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/17842/conthrax-sb.woff') format('woff');
+  font-display: swap;
+}
+
+/* ── Statix Brand Identity & Geometric Logo Typography ───────────────────── */
+.statix-brand-title {
+  font-family: 'Conthrax', 'Orbitron', 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* ── Stitch Design Tokens ───────────────────────────────────────────────── */
+:root {
+  --telemetry-charcoal: #0d0f12;
+  --telemetry-glass: rgba(22, 25, 30, 0.85);
+  --telemetry-sub: rgba(16, 18, 22, 0.65);
+  --telemetry-border: rgba(255, 255, 255, 0.08);
+  --telemetry-sub-border: rgba(255, 255, 255, 0.05);
+  --telemetry-chip: rgba(32, 35, 41, 0.85);
+  --telemetry-chip-border: rgba(255, 255, 255, 0.08);
+
+  --telemetry-sage: #52b788;
+  --telemetry-amber: #e0a96d;
+  --telemetry-coral: #e06d75;
+  --telemetry-cyan: #70b8d4;
+  --telemetry-violet: #9d8cd7;
+
+  /* Zero-blur color references */
+  --green: #52b788;
+  --cyan: #70b8d4;
+  --red: #e06d75;
+  --amber: #e0a96d;
+  --purple: #9d8cd7;
+}
+
+/* ── Base & Body Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTTIhL2XRNNdDesZSuSTCnMLitjnBRcUI7GKF4ZeTrFlu7V2nkEk2Gba2d8Hidwi77yy58rv8FrZq21FEc0XMQxFCjXZI-npDB-T5mlV96Lx6pckxwaW6lMmKcKSiZC_TFM0oQvuocF1poua8uy5WdMa2LALtSWwDplpQ7hmdL1rhFonOCT7Dwmh-uBTWu0mqepk6b-mNqCNQmE0aYW5uXkLtRUpLlMaLc5QL_0kRHJguH-ZSUZLEU4g') center center / cover no-repeat fixed, #121316;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  display: none;
+}
+
+/* ── Refined Deep Frosted Glass Panel matching Stitch SCREEN ────────────── */
+.glass-card {
+  background: rgba(22, 25, 30, 0.85);
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+}
+
+/* Nested Inner Sub-Card */
+.glass-card-sub {
+  background: rgba(16, 18, 22, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+}
+
+/* ── Pure Glass Floating Island Specification ───────────────────────────── */
+.pure-glass-capsule {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pure-glass-capsule:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Reference-exact Pure Glass Middle Island Bezel */
+.pure-glass-middle {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pure-glass-middle:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.glass-inner-bezel {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Light Wallpaper Adaptive Contrast Specification ─────────────────────── */
+body[data-wallpaper-theme="light"] {
+  --telemetry-glass: rgba(18, 20, 26, 0.90);
+}
+
+body[data-wallpaper-theme="light"] .pure-glass-capsule,
+body[data-wallpaper-theme="light"] .pure-glass-middle {
+  background: rgba(14, 16, 22, 0.82) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+}
+
+body[data-wallpaper-theme="light"] .glass-card {
+  background: rgba(16, 18, 24, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+body[data-wallpaper-theme="light"] #wallpaperOverlay {
+  background: rgba(0, 0, 0, var(--auto-dim-alpha, 0.45)) !important;
+}
+
+/* Hide scrollbar utility for mobile overflow containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* ── Clean Unboxed Telemetry Text Specification ───────────────────────────── */
+.telemetry-chip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 !important;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #d1d5db;
+  white-space: nowrap;
+  line-height: 1.25;
+}
+
+.telemetry-chip .pip {
+  display: none !important;
+}
+
+/* ── Tactile Sync Animation ──────────────────────────────────────────────── */
+@keyframes spin-smooth {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spin-active {
+  animation: spin-smooth 0.85s linear infinite;
+}
+
+/* ── Sleep Coach Target Control Segmented Buttons ────────────────────────── */
+#coachTargetControl {
+  display: flex;
+  background: rgba(16, 18, 22, 0.65);
+  padding: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 3px;
+}
+
+#coachTargetControl .pb-seg-btn {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#coachTargetControl .pb-seg-btn.active {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ── 7-Day Analytics Segmented Tabs ──────────────────────────────────────── */
+#trendTabContainer {
+  display: flex;
+  align-items: center;
+  background: #17181c;
+  padding: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 2px;
+}
+
+#trendTabContainer .pb-seg-btn {
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #9ca3af;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#trendTabContainer .pb-seg-btn:hover {
+  color: #ffffff;
+}
+
+#trendTabContainer .pb-seg-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+#analyticsSection .relative {
+  height: 260px;
+  max-height: 260px;
+}
+
+/* ── AI Council Specialist Tabs & Biomarker Chips ────────────────────────── */
+.council-tab {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(32, 35, 41, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.council-tab:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.council-tab.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.council-biomarker-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #d1d5db;
+}
+
+/* ── Activity Rings & SVG Transitions ────────────────────────────────────── */
+.ring-progress {
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Custom Scrollbars ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(13, 15, 18, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
