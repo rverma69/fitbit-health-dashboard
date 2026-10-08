@@ -18,6 +18,8 @@ data/*
 !public/*.webp
 !public/*.svg
 !public/fonts/*
+!docs/*.png
+!docs/*.jpg
 
 # OS & Editor Files
 .DS_Store
