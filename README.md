@@ -7,9 +7,7 @@
 
 > **Statix** is a luxury, dark-mode personal health dashboard that pulls authentic raw sensor telemetry directly from **Google Health API v4** (paired with Fitbit Inspire 3 / Pixel Watch / Galaxy Watch) and calculates peer-reviewed sports science metrics: **WHOOP Recovery**, **Cardiovascular Day Strain**, **Firstbeat Body Battery**, **Biological Age & Pace of Aging**, and **Circadian Sleep Coaching** without paywalls or synthetic fallbacks.
 
-<p align="center">
-  <img src="docs/dashboard_preview.png" alt="Statix Precision Dashboard Interface" width="100%">
-</p>
+
 
 ---
 
